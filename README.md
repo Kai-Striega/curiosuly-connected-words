@@ -1,2 +1,2 @@
-# curiosuly-connected-words
+# curiously-connected-words
 Find curiously connected words
