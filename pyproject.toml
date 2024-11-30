@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "curiously-connected-words"
+version = "0.1.0"
+description = "Find curiously connected words"
+authors = ["Kai Striega <me@kaistriega.com>"]
+license = "BSD 3-Clause"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+click = "^8.1.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
