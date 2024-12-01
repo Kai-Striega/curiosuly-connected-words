@@ -67,7 +67,9 @@ def dump_relationships_as_csv(etymdb_path: str, outdir: str):
     csv_writer.writeheader()
     with open(etymdb_edges_path) as fp:
         for relationship in parse_relationships(fp):
-            csv_writer.writerow(relationship.to_neo4j_dict())
+
+            if relationship.parent > 0 and relationship.child > 0:
+                csv_writer.writerow(relationship.to_neo4j_dict())
 
 
 if __name__ == "__main__":
