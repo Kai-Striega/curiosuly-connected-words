@@ -1,6 +1,10 @@
 from dataclasses import dataclass
 from typing import TextIO, Iterable, Optional
 
+import numpy as np
+
+from word2vec_model import Word2VecModel
+
 
 @dataclass(frozen=True)
 class Vertex:
@@ -9,6 +13,7 @@ class Vertex:
     field: int
     lexeme: str
     meaning: Optional[str] = None
+    embedding: Optional[np.ndarray] = None
 
     def to_neo4j_dict(self) -> dict:
         fields = {
@@ -21,6 +26,9 @@ class Vertex:
         if self.meaning is not None:
             fields["meaning"] = self.meaning
 
+        if self.embedding is not None:
+            fields["embedding:double[]"] = self.embedding
+
         return fields
 
 
@@ -31,7 +39,14 @@ def _get_language(language_code: str, code_to_lang: dict[str, str]) -> str:
         return "Unknown"
 
 
-def parse_vertices(fp: TextIO, code_to_lang: dict[str, str]) -> Iterable[Vertex]:
+def _get_embedding(word: str, model: Word2VecModel) -> Optional[np.ndarray]:
+    try:
+        return model.get_vector(word)
+    except KeyError:
+        return None
+
+
+def parse_vertices(fp: TextIO, code_to_lang: dict[str, str], model: Word2VecModel) -> Iterable[Vertex]:
     for row in fp:
         entries = [e for e in row.rstrip("\n").split("\t") if e != ""]
 
@@ -45,10 +60,13 @@ def parse_vertices(fp: TextIO, code_to_lang: dict[str, str]) -> Iterable[Vertex]
                 continue
 
         language = _get_language(language_code, code_to_lang)
+        embedding = _get_embedding(lexeme, model)
+
         yield Vertex(
             etymdb_id=int(idx),
             language=language,
             field=int(field),
             lexeme=lexeme,
             meaning=meaning,
+            embedding=embedding,
         )
