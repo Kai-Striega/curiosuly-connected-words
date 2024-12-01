@@ -57,7 +57,7 @@ def dump_vertices_as_csv(etymdb_path: str, outdir: str):
 @click.argument("outdir", type=click.Path(exists=True))
 def dump_relationships_as_csv(etymdb_path: str, outdir: str):
     etymdb_edges_path = Path(etymdb_path) / "etymdb_links_info.csv"
-    edge_path = Path(".") / outdir / "relationships.csv"
+    edge_path = Path(".") / outdir / "neo4j_import_data" / "relationships.csv"
     headers = [":START_ID", ":END_ID", ":TYPE"]
 
     if not edge_path.exists():
