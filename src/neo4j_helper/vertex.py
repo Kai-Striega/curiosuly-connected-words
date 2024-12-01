@@ -27,7 +27,7 @@ class Vertex:
             fields["meaning"] = self.meaning
 
         if self.embedding is not None:
-            fields["embedding:double[]"] = self.embedding
+            fields["embedding:double[]"] = "\t".join(str(x) for x in self.embedding)
 
         return fields
 
