@@ -6,6 +6,14 @@ Find curiously connected words
 ### Getting the data into Neo4j
 
 ```shell
+poetry run python src/neo4j_helper dump-relationships-as-csv data/EtymDB/data/split_etymdb/ data
+```
+
+```shell
+poetry run python src/neo4j_helper dump-vertices-as-csv data/EtymDB/data/split_etymdb/ data
+```
+
+```shell
 docker run --interactive --tty --rm \
   --publish=7474:7474 \
   --publish=7687:7687 \
